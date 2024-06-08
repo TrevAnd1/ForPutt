@@ -11,7 +11,7 @@ const AnimatedBackground2: React.FC = () => {
     Animated.parallel([
       Animated.timing(animatedValue, {
         toValue: -height,
-        duration: 1000,
+        duration: 2000,
         easing: Easing.bezier(0.42, 0, 0.58, 1),
         useNativeDriver: false,
       }),
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFF",
     borderColor: "#00000",
     borderWidth: 1,
+    color: "#FFFFF",
   },
 });
 
