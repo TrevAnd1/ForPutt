@@ -27,7 +27,17 @@
       "output": "static",
       "favicon": "./assets/images/ios/ForPuttIcon.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "/Users/trevoranderson/Documents/Projects/ForPutt/ForPuttProject/assets/fonts/"
+          ]
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     },

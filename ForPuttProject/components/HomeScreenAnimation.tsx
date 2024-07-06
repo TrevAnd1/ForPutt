@@ -1,37 +1,40 @@
-import { Animated, StyleSheet, View, Dimensions } from "react-native";
 import React, { useEffect, useRef } from "react";
+import { Animated, View, StyleSheet, Dimensions, Easing } from "react-native";
 
-const { height } = Dimensions.get("window");
+const { height, width } = Dimensions.get("screen");
 
-const AnimatedBackground: React.FC = () => {
-  const animatedValue = useRef(new Animated.Value(height)).current;
+const AnimatedBackground2: React.FC = () => {
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const backgroundOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
-  }, [animatedValue]);
+    Animated.parallel([
+      Animated.timing(animatedValue, {
+        toValue: -height,
+        duration: 2000,
+        easing: Easing.bezier(0.42, 0, 0.58, 1),
+        useNativeDriver: false,
+      }),
+      Animated.timing(backgroundOpacity, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  }, [animatedValue, backgroundOpacity]);
 
-  const backgroundColorInterpolation = animatedValue.interpolate({
-    inputRange: [0, height],
-    outputRange: ["#00FF00", "#FFFFFF"],
-  });
-
-  const animatedStyle = {
+  const golfBallStyle = {
     transform: [{ translateY: animatedValue }],
   };
 
   const backgroundStyle = {
-    backgroundColor: backgroundColorInterpolation,
+    opacity: backgroundOpacity,
   };
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={[styles.animatedBackground, animatedStyle, backgroundStyle]}
-      />
+      <Animated.View style={[styles.background, backgroundStyle]} />
+      <Animated.View style={[styles.golfBall, golfBallStyle]} />
     </View>
   );
 };
@@ -40,13 +43,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFF",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
-  animatedBackground: {
+  background: {
     position: "absolute",
+    top: 0,
     left: 0,
     right: 0,
-    height: height,
+    bottom: 0,
+    backgroundColor: "#00FF00",
+    opacity: 0,
+  },
+  golfBall: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#FFFFF",
+    borderColor: "#00000",
+    borderWidth: 1,
+    color: "#FFFFF",
   },
 });
 
-export default AnimatedBackground;
+export default AnimatedBackground2;
